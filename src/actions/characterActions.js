@@ -9,17 +9,19 @@ const patch = (a, b) => {
     }
 }
 
+const suffix = 'wildcard';
+
 export default {
     delete: (model) => {
         if(!confirm(`Delete ${model.name}?`)) return;
 
-        localStorage.removeItem(`${model.name}.wildsea`);
+        localStorage.removeItem(`${model.name}.${suffix}`);
         return { success: `${model.name} deleted from character storage` };
     },
     deleteAll: () => {
         if(!confirm('Delete all saved characters?')) return;
         let characters = [...new Array(window.localStorage.length)].map((x,i) => window.localStorage.key(i));
-        characters = characters.filter(c => c.endsWith('.wildsea'));
+        characters = characters.filter(c => c.endsWith(`.${suffix}`));
         characters.forEach(c => localStorage.removeItem(c));
         return { success: 'All characters deleted from character storage' };
     },
@@ -27,17 +29,17 @@ export default {
         let href = URL.createObjectURL(new Blob([JSON.stringify(model)]));
         let a = document.createElement('a');
         a.href = href;
-        a.download = `${model.name}.wildsea`;
+        a.download = `${model.name}.${suffix}`;
         a.click();
     },
     import: (done) => {
         let file = document.createElement('input');
         file.type = 'file';
-        file.accept = '.wildsea';
+        file.accept = `.${suffix}`;
         file.onchange = (e) => {
             e.target.files[0].text().then((t) => {
                 let key = JSON.parse(t).name;
-                localStorage.setItem(`${key}.wildsea`, t);
+                localStorage.setItem(`${key}.${suffix}`, t);
                 done(`${key} added to character storage`);
             });
         };
@@ -45,7 +47,7 @@ export default {
     },
     load: (model, key) => {
         let name = key;
-        if(name == `${model.name}.wildsea`) return { model };
+        if(name == `${model.name}.${suffix}`) return { model };
 
         let alert = '';
         if(model.name && confirm(`Save ${model.name} before changing characters?`)) {
@@ -60,7 +62,7 @@ export default {
     },
     loadList: () => {
         let characters = [...new Array(window.localStorage.length)].map((x,i) => window.localStorage.key(i));
-        characters = characters.filter(c => c.endsWith('.wildsea'));
+        characters = characters.filter(c => c.endsWith(`.${suffix}`));
         characters.sort((a,b) => a.localeCompare(b));
         return characters;
     },
@@ -68,7 +70,7 @@ export default {
         if(!model.name)
             return { error: 'Cannot save an unnamed character' };
 
-        localStorage.setItem(`${model.name}.wildsea`, JSON.stringify(model));
+        localStorage.setItem(`${model.name}.${suffix}`, JSON.stringify(model));
         return { success: `${model.name} saved` };
     }
 };
