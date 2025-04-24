@@ -15,7 +15,7 @@ const character = () => ({
     },
     drives: [],
     weaknesses: [],
-    skills: [skill('New Skill')],
+    skills: [],
     resources: {
         quips: []
     },

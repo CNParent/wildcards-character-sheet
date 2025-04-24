@@ -9,7 +9,7 @@
 	import Details from "./components/Details.svelte";
 	import Navbar from "./components/Navbar.svelte";
     import Notes from "./components/Notes.svelte";
-	import Skill from "./components/Skill.svelte";
+	import Skills from "./components/Skills.svelte";
     import Weaknesses from "./components/Weaknesses.svelte";
 
 	let model = character();
@@ -46,25 +46,27 @@
 			<Weaknesses model={model.weaknesses} />
 		</Details>
 		<Details title="Major Milestones" size="col-lg-3 col-12">
-			<Collection model={model.milestones.major} itemType={collectionTypes.simple} afterRemove={(item => model.milestones.usedMajor.push(item))} />
+			<Collection model={model.milestones.major} itemType={collectionTypes.simple} afterRemove={item => {
+				model.milestones.usedMajor.push(item);
+				model.milestones.usedMajor = model.milestones.usedMajor;
+			}} />
 			<hr />
 			<Details title="Used" size="col-12">
 				<Collection model={model.milestones.usedMajor} itemType={collectionTypes.simple} allowAdd={false} />
 			</Details>
 		</Details>
 		<Details title="Minor Milestones" size="col-lg-3 col-12">
-			<Collection model={model.milestones.minor} itemType={collectionTypes.simple} afterRemove={(item => model.milestones.usedMinor.push(item))}  />
+			<Collection model={model.milestones.minor} itemType={collectionTypes.simple} afterRemove={item => {
+				model.milestones.usedMinor.push(item);
+				model.milestones.usedMinor = model.milestones.usedMinor;
+			}} />
 			<hr />
 			<Details title="Used" size="col-12">
 				<Collection model={model.milestones.usedMinor} itemType={collectionTypes.simple} allowAdd={false} />
 			</Details>
 		</Details>
 		<Details title="Skills" size="col-lg-3 col-12">
-			<div class="row">
-				{#each model.skills as skill}
-				<Skill model={skill} />
-				{/each}
-			</div>
+			<Skills model={model.skills} />
 		</Details>
 		<Details title="Quips" size="col-lg-3 col-12">
 			<Collection model={model.resources.quips} itemType={collectionTypes.simple} />
