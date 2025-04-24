@@ -1498,7 +1498,7 @@
 				span = element("span");
 				t = text(/*label*/ ctx[1]);
 				attr(span, "class", "align-self-center text-right border-right pr-1 py-2 font-weight-bold");
-				set_style(span, "width", "5.5em");
+				set_style(span, "width", "8.0em");
 			},
 			m(target, anchor) {
 				insert(target, span, anchor);
@@ -1525,7 +1525,7 @@
 				span = element("span");
 				t = text(/*label*/ ctx[1]);
 				attr(span, "class", "align-self-center text-right mr-1 py-2 font-weight-bold");
-				set_style(span, "width", "5.5em");
+				set_style(span, "width", "8.0em");
 				set_style(span, "height", "2.5em");
 			},
 			m(target, anchor) {
