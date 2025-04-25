@@ -1915,7 +1915,7 @@
 				append(button, t);
 
 				if (!mounted) {
-					dispose = listen(button, "click", /*click_handler_1*/ ctx[8]);
+					dispose = listen(button, "click", /*click_handler_2*/ ctx[9]);
 					mounted = true;
 				}
 			},
@@ -1933,7 +1933,7 @@
 		};
 	}
 
-	// (19:0) {#if active}
+	// (24:0) {#if active}
 	function create_if_block$9(ctx) {
 		let div;
 		let input;
@@ -1972,8 +1972,8 @@
 				if (!mounted) {
 					dispose = [
 						listen(input, "input", /*input_input_handler*/ ctx[6]),
-						listen(button0, "click", /*handleApply*/ ctx[4]),
-						listen(button1, "click", /*click_handler*/ ctx[7])
+						listen(button0, "click", /*click_handler*/ ctx[7]),
+						listen(button1, "click", /*click_handler_1*/ ctx[8])
 					];
 
 					mounted = true;
@@ -2049,14 +2049,18 @@
 		} } = $$props;
 
 		let active = false;
+		let shouldFocus = false;
 		let control;
 
-		function handleApply() {
-			$$invalidate(2, active = false);
-		}
+		let activate = () => {
+			$$invalidate(2, active = true);
+			shouldFocus = true;
+		};
 
 		afterUpdate(() => {
-			if (control) control.focus();
+			if (!control || !shouldFocus) return;
+			control.focus();
+			shouldFocus = false;
 		});
 
 		function input_binding($$value) {
@@ -2071,8 +2075,9 @@
 			$$invalidate(0, content);
 		}
 
-		const click_handler = () => remove();
-		const click_handler_1 = () => $$invalidate(2, active = true);
+		const click_handler = () => $$invalidate(2, active = false);
+		const click_handler_1 = () => remove();
+		const click_handler_2 = () => activate();
 
 		$$self.$$set = $$props => {
 			if ('content' in $$props) $$invalidate(0, content = $$props.content);
@@ -2084,11 +2089,12 @@
 			remove,
 			active,
 			control,
-			handleApply,
+			activate,
 			input_binding,
 			input_input_handler,
 			click_handler,
-			click_handler_1
+			click_handler_1,
+			click_handler_2
 		];
 	}
 
